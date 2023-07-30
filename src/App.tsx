@@ -1,34 +1,45 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { Box } from "@chakra-ui/react";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Box
+      bg="#001e39"
+      h="100vh"
+      w="100%"
+      pos="relative"
+      _before={{
+        content: '""',
+        display: "block",
+        position: "absolute",
+        top: "0",
+        left: "0",
+        right: "0",
+        bottom: "0",
+        backgroundImage: `
+        linear-gradient(to right, #404040 1px, transparent 1px)
+        `,
+        backgroundPosition: "0 0, 0 0",
+        backgroundSize: "40px 40px",
+        zIndex: 1,
+      }}
+      _after={{
+        content: '""',
+        display: "block",
+        position: "absolute",
+        top: "0",
+        left: "0",
+        right: "0",
+        bottom: "0",
+        backgroundImage: `
+          linear-gradient(#404040 1px, transparent 1px),
+          linear-gradient(90deg, #CBD5E0 1px, transparent 1px)
+        `,
+        backgroundPosition: "0 0, 0 0",
+        backgroundSize: "40px 40px",
+        zIndex: 1,
+      }}
+    />
   );
 }
 
