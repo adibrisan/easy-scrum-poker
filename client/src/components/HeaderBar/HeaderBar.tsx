@@ -1,6 +1,9 @@
 import { Avatar, Flex, Text, Box } from "@chakra-ui/react";
+import { useContext } from "react";
+import { UserDataContext } from "../../context/UserDataContext";
 
 const HeaderBar = () => {
+  const { userData } = useContext(UserDataContext);
   return (
     <Flex justifyContent="space-between" top={0}>
       <Box display="inline-block" position="relative" p={7}>
@@ -40,7 +43,7 @@ const HeaderBar = () => {
           }}
           color="white"
         >
-          User name
+          {userData.name}
         </Text>
       </Box>
     </Flex>

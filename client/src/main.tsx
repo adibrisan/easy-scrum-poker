@@ -6,6 +6,7 @@ import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeaderBar from "./components/HeaderBar/HeaderBar";
+import { UserDataProvider } from "./context/UserDataContext";
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,10 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ChakraProvider>
-      <HeaderBar />
-      <RouterProvider router={router} />
+      <UserDataProvider>
+        <HeaderBar />
+        <RouterProvider router={router} />
+      </UserDataProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

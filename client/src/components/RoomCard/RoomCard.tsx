@@ -1,5 +1,6 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserDataContext } from "../../context/UserDataContext";
 import {
   Box,
   Heading,
@@ -8,6 +9,7 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { UserData } from "../../context/UserDataContext";
 import getSocketConnection from "../../socketService";
 
 interface IRoomCard {
@@ -23,6 +25,7 @@ const RoomCard = ({
   inputText,
   mode = "create",
 }: IRoomCard) => {
+  const { setUserData } = useContext(UserDataContext);
   const navigate = useNavigate();
   const marginValue = useBreakpointValue({ base: "20px", md: "0", lg: "20px" });
   const [userName, setUserName] = useState("");
@@ -56,6 +59,7 @@ const RoomCard = ({
       setShowError(true);
     } else {
       console.log("Creating room with user name:", userName);
+      setUserData((prev) => ({ ...prev, name: userName }));
       socket.emit("createRoom", userName);
       socket.on("roomCreated", (roomIdFromServer: string) => {
         setRoomId(roomIdFromServer);
