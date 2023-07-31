@@ -51,16 +51,21 @@ io.on("connection", (socket) => {
 
       // Emit the updated user list to all users in the room
       io.to(roomId).emit("userJoined", usersInRoom);
+      io.to(roomId).emit("updateUsers", rooms.get(roomId));
     } else {
       // If the room does not exist, you can handle the situation accordingly
       // For example, emit a "roomNotFound" event back to the user
       socket.emit("roomNotFound");
     }
-  });
+    socket.on("disconnect", () => {
+      const userIndex = rooms.get(roomId).indexOf(userName);
+      if (userIndex !== -1) {
+        rooms.get(roomId).splice(userIndex, 1);
+      }
 
-  // Event listener for when a client disconnects
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
+      // Emit the updated user list to all clients in the room
+      io.to(roomId).emit("updateUsers", rooms.get(roomId));
+    });
   });
 });
 

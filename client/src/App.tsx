@@ -1,11 +1,9 @@
 import styles from "./App.module.css";
 import RoomCard from "./components/RoomCard/RoomCard";
-import HeaderBar from "./components/HeaderBar/HeaderBar";
 
 function App() {
   return (
     <>
-      <HeaderBar />
       <div className={styles.center}>
         <div className={styles.cardContainer}>
           <RoomCard
