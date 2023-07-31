@@ -1,11 +1,9 @@
 import { Avatar, Flex, Text, Box } from "@chakra-ui/react";
 
 const HeaderBar = () => {
-  // Use the useStyleConfig hook to get the base styles for the Text component
-
   return (
-    <Flex justifyContent="space-between">
-      <Box display="inline-block" position="relative" p={5}>
+    <Flex justifyContent="space-between" top={0}>
+      <Box display="inline-block" position="relative" p={7}>
         <Text
           as="span"
           sx={{
@@ -30,7 +28,7 @@ const HeaderBar = () => {
           lanning poker
         </Text>
       </Box>
-      <Box display="inline-block" position="relative" p={5}>
+      <Box display="inline-block" position="relative" p={7}>
         <Avatar name="A B" size="lg" bg="teal.500" color="white" />
         <Text
           as="span"
