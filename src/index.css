@@ -1,0 +1,50 @@
+*,
+*::before,
+::after {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+*::before {
+  background-color: #001e39;
+  content: "";
+  /* display: block; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to right, #404040 1px, transparent 1px);
+  background-position: 0 0, 0 0;
+  background-size: 40px 40px;
+  z-index: -1;
+}
+*::after {
+  content: "";
+  /* display: block; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(#404040 1px, transparent 1px),
+    linear-gradient(90deg, #404040 1px, transparent 1px);
+  background-position: 0 0, 0 0;
+  background-size: 40px 40px;
+  z-index: -1;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-weight: 300;
+  line-height: 1.6;
+  height: 100%;
+  width: 100%;
+}
