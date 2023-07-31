@@ -77,7 +77,7 @@ const RoomCard = ({
           </Box>
         )}
 
-        <Button colorScheme="teal" onClick={handleCreateRoom}>
+        <Button size="lg" colorScheme="teal" onClick={handleCreateRoom}>
           {buttonTitle}
         </Button>
       </VStack>
