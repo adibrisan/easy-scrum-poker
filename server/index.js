@@ -17,10 +17,18 @@ function generateRoomId() {
 }
 
 const rooms = new Map();
+const userRoomMap = new Map();
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-
+  console.log(
+    "has joined again",
+    socket.handshake.query.userId,
+    "and its name:",
+    socket.handshake.query.userName
+  );
+  const userIdReconnected = socket.handshake.query.userId;
+  const userNameReconnected = socket.handshake.query.userName;
   socket.on("createRoom", (userName) => {
     // Generate a random room ID
     const roomId = generateRoomId();
@@ -39,8 +47,14 @@ io.on("connection", (socket) => {
 
   socket.on("joinRoom", (roomId, userName) => {
     // Check if the room exists
-    console.log("rooms", roomId);
-    if (rooms.has(roomId)) {
+    const usersPresent = [];
+    if (userIdReconnected) {
+      userRoomMap.set(userIdReconnected, roomId);
+      console.log("userRoomMap", userRoomMap);
+      usersPresent.push(userNameReconnected);
+      rooms.set(roomId, usersPresent);
+      socket.join(roomId);
+    } else if (rooms.has(roomId)) {
       // Add the user's name to the list of users in the room
       const usersInRoom = rooms.get(roomId) || [];
       usersInRoom.push(userName);
@@ -57,12 +71,16 @@ io.on("connection", (socket) => {
       // For example, emit a "roomNotFound" event back to the user
       socket.emit("roomNotFound");
     }
+    console.log("roomremain", rooms);
     socket.on("disconnect", () => {
-      const userIndex = rooms.get(roomId).indexOf(userName);
-      if (userIndex !== -1) {
-        rooms.get(roomId).splice(userIndex, 1);
+      if (roomId) {
+        const userIndex = rooms.get(roomId)?.indexOf(userName);
+        if (userIndex !== -1) {
+          rooms.get(roomId)?.splice(userIndex, 1);
+        }
       }
 
+      userRoomMap.delete(userIdReconnected);
       // Emit the updated user list to all clients in the room
       io.to(roomId).emit("updateUsers", rooms.get(roomId));
     });

@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { UserData } from "../../context/UserDataContext";
 import getSocketConnection from "../../socketService";
+import uuid from "react-uuid";
 
 interface IRoomCard {
   title: string;
@@ -61,8 +62,12 @@ const RoomCard = ({
       console.log("Creating room with user name:", userName);
       setUserData((prev) => ({ ...prev, name: userName }));
       socket.emit("createRoom", userName);
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("userId", uuid());
+      localStorage.setItem("creator", "true");
       socket.on("roomCreated", (roomIdFromServer: string) => {
         setRoomId(roomIdFromServer);
+        localStorage.setItem("roomId", roomIdFromServer);
         console.log("bbbbb", roomIdFromServer); // Store the roomId in state
       });
     }
@@ -71,6 +76,9 @@ const RoomCard = ({
   const handleJoinRoom = () => {
     // Emit the 'joinRoom' event to the server with the roomId and user's name
     socket.emit("joinRoom", joinRoomId, userNameJoin);
+    localStorage.setItem("userName", userNameJoin);
+    localStorage.setItem("userId", uuid());
+    localStorage.setItem("roomId", joinRoomId);
     console.log("roomiD", joinRoomId);
 
     // Listen for 'userJoined' event from the server and update the user list

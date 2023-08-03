@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background-color: gray;
+  height: 100vh;
 }
 
 .cards {
@@ -10,10 +10,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   list-style-type: none;
 }
 
 .yourCard {
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
 }
