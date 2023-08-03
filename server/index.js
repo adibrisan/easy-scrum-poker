@@ -18,7 +18,7 @@ function generateRoomId() {
 
 const rooms = new Map();
 const userRoomMap = new Map();
-const usersPresent = [];
+const usersPresent = new Set();
 
 io.on("connection", (socket) => {
   console.log("A user connected");
@@ -51,12 +51,12 @@ io.on("connection", (socket) => {
     if (userIdReconnected) {
       userRoomMap.set(userIdReconnected, roomId);
       console.log("userRoomMap", userRoomMap);
-      usersPresent.push(userNameReconnected);
+      usersPresent.add(userNameReconnected);
       rooms.set(roomId, usersPresent);
       socket.join(roomId);
     } else if (rooms.has(roomId)) {
       // Add the user's name to the list of users in the room
-      const usersInRoom = rooms.get(roomId) || [];
+      const usersInRoom = Array.from(rooms.get(roomId)) || [];
       usersInRoom.push(userName);
       rooms.set(roomId, usersInRoom);
 
@@ -73,12 +73,12 @@ io.on("connection", (socket) => {
     }
     console.log("roomremain", rooms);
     socket.on("disconnect", () => {
-      if (roomId) {
-        const userIndex = rooms.get(roomId)?.indexOf(userName);
-        if (userIndex !== -1) {
-          rooms.get(roomId)?.splice(userIndex, 1);
-        }
-      }
+      //   if (roomId) {
+      //     const userIndex = rooms.get(roomId)?.indexOf(userName);
+      //     if (userIndex !== -1) {
+      //       rooms.get(roomId)?.splice(userIndex, 1);
+      //     }
+      //   }
 
       userRoomMap.delete(userIdReconnected);
       rooms.delete(roomId);

@@ -1,13 +1,15 @@
 import styles from "./PokerPage.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Box } from "@chakra-ui/react";
 import getSocketConnection from "./socketService";
 import { io } from "socket.io-client";
 
 import PokerCard from "./components/PokerCard/PokerCard";
 import { storyPointsInDays } from "./utils/storyPoints";
+import { UserDataContext } from "./context/UserDataContext";
 
 const PokerPage = () => {
+  const { setUserData } = useContext(UserDataContext);
   const [users, setUsers] = useState<string[]>([]);
 
   const socket = getSocketConnection();
@@ -15,6 +17,14 @@ const PokerPage = () => {
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
   //   console.log("inroom", localStorage.getItem("roomId"));
+
+  useEffect(() => {
+    if (userName) {
+      setUserData((prev) => ({ ...prev, name: userName }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userName]);
+
   useEffect(() => {
     const newSocket = io("http://localhost:3001", {
       query: { userId, userName }, // Send the user ID on connection

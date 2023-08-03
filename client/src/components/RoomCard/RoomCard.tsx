@@ -44,8 +44,6 @@ const RoomCard = ({
     }
     if (roomId) {
       navigate(`/${roomId}`);
-    } else if (joinRoomId) {
-      navigate(`/${joinRoomId}`);
     }
   }, [userName, roomId, joinRoomId, navigate]);
 
@@ -81,6 +79,7 @@ const RoomCard = ({
     localStorage.setItem("userName", userNameJoin);
     localStorage.setItem("userId", uuid());
     localStorage.setItem("roomId", joinRoomId);
+    navigate(`/${joinRoomId}`);
     console.log("roomiD", joinRoomId);
 
     // Listen for 'userJoined' event from the server and update the user list
