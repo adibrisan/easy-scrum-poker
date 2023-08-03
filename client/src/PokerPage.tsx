@@ -40,7 +40,7 @@ const PokerPage = () => {
 
   return (
     <div className={styles.cardsContainer}>
-      {users}
+      <div style={{ color: "white" }}>{users}...</div>
       <div className={styles.yourCard}>
         <PokerCard number={0} />
       </div>

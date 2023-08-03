@@ -44,8 +44,10 @@ const RoomCard = ({
     }
     if (roomId) {
       navigate(`/${roomId}`);
+    } else if (joinRoomId) {
+      navigate(`/${joinRoomId}`);
     }
-  }, [userName, roomId, navigate]);
+  }, [userName, roomId, joinRoomId, navigate]);
 
   const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);

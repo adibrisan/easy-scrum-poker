@@ -18,6 +18,7 @@ function generateRoomId() {
 
 const rooms = new Map();
 const userRoomMap = new Map();
+const usersPresent = [];
 
 io.on("connection", (socket) => {
   console.log("A user connected");
@@ -47,7 +48,6 @@ io.on("connection", (socket) => {
 
   socket.on("joinRoom", (roomId, userName) => {
     // Check if the room exists
-    const usersPresent = [];
     if (userIdReconnected) {
       userRoomMap.set(userIdReconnected, roomId);
       console.log("userRoomMap", userRoomMap);
@@ -81,6 +81,7 @@ io.on("connection", (socket) => {
       }
 
       userRoomMap.delete(userIdReconnected);
+      rooms.delete(roomId);
       // Emit the updated user list to all clients in the room
       io.to(roomId).emit("updateUsers", rooms.get(roomId));
     });
