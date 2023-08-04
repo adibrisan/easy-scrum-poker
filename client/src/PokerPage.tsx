@@ -34,7 +34,7 @@ const PokerPage = () => {
       newSocket.emit("joinRoom", roomId);
       newSocket.on("updateUsers", (updatedUsers: string[]) => {
         console.log("UPDATE", updatedUsers);
-        setUsers((prevUsers) => [...prevUsers, ...updatedUsers]);
+        setUsers(updatedUsers);
       });
     });
     console.log("things", roomId, userId);
