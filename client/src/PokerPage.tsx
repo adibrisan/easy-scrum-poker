@@ -32,6 +32,10 @@ const PokerPage = () => {
 
     newSocket.on("connect", () => {
       newSocket.emit("joinRoom", roomId);
+      newSocket.on("updateUsers", (updatedUsers: string[]) => {
+        console.log("UPDATE", updatedUsers);
+        setUsers((prevUsers) => [...prevUsers, ...updatedUsers]);
+      });
     });
     console.log("things", roomId, userId);
     // setSocket(newSocket);
@@ -41,12 +45,8 @@ const PokerPage = () => {
     };
   }, [roomId, userId, userName]);
 
-  useEffect(() => {
-    socket.on("updateUsers", (updatedUsers: string[]) => {
-      setUsers(updatedUsers);
-    });
-  }, [socket]);
-  console.log("localstorage", localStorage.getItem("createdRoomId"));
+  useEffect(() => {}, [socket]);
+  //   console.log("localstorage", localStorage.getItem("createdRoomId"));
 
   return (
     <div className={styles.cardsContainer}>

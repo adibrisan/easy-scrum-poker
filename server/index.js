@@ -72,6 +72,7 @@ io.on("connection", (socket) => {
       socket.emit("roomNotFound");
     }
     console.log("roomremain", rooms);
+    io.to(roomId).emit("updateUsers", Array.from(rooms.get(roomId)));
     socket.on("disconnect", () => {
       //   if (roomId) {
       //     const userIndex = rooms.get(roomId)?.indexOf(userName);
