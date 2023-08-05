@@ -19,6 +19,7 @@ function generateRoomId() {
 const rooms = new Map();
 const userRoomMap = new Map();
 const usersPresent = new Set();
+const userVotes = {};
 
 io.on("connection", (socket) => {
   console.log("A user connected");
@@ -44,6 +45,12 @@ io.on("connection", (socket) => {
     socket.emit("roomCreated", roomId);
 
     console.log(`Room created: ${roomId} for user:${userName}`);
+  });
+
+  socket.on("userVote", (userVote) => {
+    userVotes[userVote.userName] = userVote.storyPoints;
+    console.log("dsadsadasdsa", userVotes);
+    io.emit("allUserVotes", userVotes); // Broadcast all user votes to all clients
   });
 
   socket.on("joinRoom", (roomId, userName) => {
@@ -72,6 +79,7 @@ io.on("connection", (socket) => {
       socket.emit("roomNotFound");
     }
     console.log("roomremain", rooms);
+    console.log(Array.from(rooms.get(roomId)));
     io.to(roomId).emit("updateUsers", Array.from(rooms.get(roomId)));
     socket.on("disconnect", () => {
       //   if (roomId) {

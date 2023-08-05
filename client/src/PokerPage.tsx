@@ -19,8 +19,16 @@ const PokerPage = () => {
   //   console.log("inroom", localStorage.getItem("roomId"));
 
   useEffect(() => {
+    socket.on("allUserVotes", (allUserVotes) => {
+      console.log("ALLLLLLLL", allUserVotes);
+      // Update your UI to display allUserVotes
+      // For example, you can iterate through allUserVotes and display names and votes.
+    });
+  }, [socket]);
+
+  useEffect(() => {
     if (userName) {
-      setUserData((prev) => ({ ...prev, name: userName }));
+      setUserData((prev) => ({ ...prev, name: userName, roomId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
