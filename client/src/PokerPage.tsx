@@ -47,8 +47,11 @@ const PokerPage = () => {
       newSocket.emit("joinRoom", userData);
       newSocket.emit("roomId", roomId);
       newSocket.on("updateUsers", (updatedUsers: User[]) => {
-        console.log("UPDATE", updatedUsers, checkUser(updatedUsers));
-        setUsers(checkUser(updatedUsers));
+        const roomUsers = checkUser(updatedUsers, roomId as string);
+        console.log("UPDATE", updatedUsers, checkUser(updatedUsers, roomId));
+
+        // setUserData(roomUsers.filter((user) => user.userId === userId)[0]);
+        setUsers(roomUsers);
       });
     });
     // console.log("things", roomId, userId);
@@ -59,14 +62,11 @@ const PokerPage = () => {
     };
   }, [roomId, userId, userName, userData]);
 
-  useEffect(() => {}, [socket]);
-  //   console.log("localstorage", localStorage.getItem("createdRoomId"));
-
   return (
     <div className={styles.cardsContainer}>
-      <div style={{ color: "white" }}>{}...</div>
+      <div style={{ color: "white" }}>Your vote:{userData.storyPoints}</div>
       <div className={styles.yourCard}>
-        <PokerCard number={0} />
+        <PokerCard number={userData.storyPoints} />
       </div>
       <ul className={styles.cards}>
         {storyPointsInDays.map((storyPoint, index) => (

@@ -17,9 +17,9 @@ const PokerCard = ({ number, clicked }: IPokerCard) => {
     localStorage.setItem("storyPoints", `${storyNumber}`);
     setUserData((prevData) => ({ ...prevData, storyPoints: storyNumber }));
     const user = {
-      userName: userData.name,
+      userName: userData.userName,
       roomId: userData.roomId,
-      storyPoints: userData.storyPoints,
+      storyPoints: storyNumber,
     };
     socket.emit("userVote", user);
   };

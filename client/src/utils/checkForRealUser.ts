@@ -6,6 +6,7 @@ export type User = {
   userId: string;
 };
 
-export function checkUser(users: User[]) {
-  return users.filter((user) => user.roomId !== "");
+export function checkUser(users: User[], roomId: string) {
+  const userExists = users.filter((user) => user.roomId !== "");
+  return userExists.filter((user) => user.roomId === roomId);
 }
