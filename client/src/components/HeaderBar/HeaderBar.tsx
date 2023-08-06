@@ -32,7 +32,12 @@ const HeaderBar = () => {
         </Text>
       </Box>
       <Box display="inline-block" position="relative" p={7}>
-        <Avatar name="A B" size="lg" bg="teal.500" color="white" />
+        <Avatar
+          name={`${userData.userName.charAt(0)}`}
+          size="lg"
+          bg="teal.500"
+          color="white"
+        />
         <Text
           as="span"
           sx={{
@@ -43,7 +48,7 @@ const HeaderBar = () => {
           }}
           color="white"
         >
-          {userData.name}
+          {userData.userName}
         </Text>
       </Box>
     </Flex>

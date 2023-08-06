@@ -43,7 +43,7 @@ const RoomCard = ({
       setShowError(false);
     }
     if (roomId) {
-      navigate(`/${roomId}`);
+      navigate(`/${roomId}`, { state: { created: true } });
     }
   }, [userName, roomId, joinRoomId, navigate]);
 
@@ -60,11 +60,21 @@ const RoomCard = ({
       setShowError(true);
     } else {
       console.log("Creating room with user name:", userName);
-      setUserData((prev) => ({ ...prev, name: userName }));
-      socket.emit("createRoom", userName);
+      // setUserData((prev) => ({ ...prev, name: userName }));
+      const userId = uuid();
       localStorage.setItem("userName", userName);
-      localStorage.setItem("userId", uuid());
+      localStorage.setItem("userId", userId);
       localStorage.setItem("creator", "true");
+      localStorage.setItem("socketId", socket.id);
+      const userInfo = {
+        userName,
+        roomId,
+        socketId: socket.id,
+        storyPoints: -1,
+        userId,
+      };
+      setUserData(userInfo);
+      socket.emit("createRoom", userInfo);
       socket.on("roomCreated", (roomIdFromServer: string) => {
         setRoomId(roomIdFromServer);
         localStorage.setItem("roomId", roomIdFromServer);
@@ -75,13 +85,22 @@ const RoomCard = ({
 
   const handleJoinRoom = () => {
     // Emit the 'joinRoom' event to the server with the roomId and user's name
-    socket.emit("joinRoom", joinRoomId, userNameJoin);
+    const userId = uuid();
     localStorage.setItem("userName", userNameJoin);
-    localStorage.setItem("userId", uuid());
+    localStorage.setItem("userId", userId);
     localStorage.setItem("roomId", joinRoomId);
     navigate(`/${joinRoomId}`);
     console.log("roomiD", joinRoomId);
-
+    const userInfo = {
+      userName: userNameJoin,
+      roomId: joinRoomId,
+      socketId: socket.id,
+      storyPoints: -1,
+      userId,
+    };
+    // socket.emit("joinRoom", joinRoomId, userNameJoin);
+    socket.emit("joinRoom", userInfo);
+    setUserData(userInfo);
     // Listen for 'userJoined' event from the server and update the user list
     socket.on("userJoined", (usersInRoom) => {
       // You can update the UI to display the list of users in the room

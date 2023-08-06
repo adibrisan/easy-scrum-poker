@@ -1,6 +1,8 @@
 import styles from "./PokerPage.module.css";
 import { useState, useEffect, useContext } from "react";
-import { Box } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
+import { checkUser } from "./utils/checkForRealUser";
+import { User } from "./utils/checkForRealUser";
 import getSocketConnection from "./socketService";
 import { io } from "socket.io-client";
 
@@ -9,8 +11,10 @@ import { storyPointsInDays } from "./utils/storyPoints";
 import { UserDataContext } from "./context/UserDataContext";
 
 const PokerPage = () => {
-  const { setUserData } = useContext(UserDataContext);
-  const [users, setUsers] = useState<string[]>([]);
+  const location = useLocation();
+  //   console.log(location);
+  const { userData, setUserData } = useContext(UserDataContext);
+  const [users, setUsers] = useState<User[]>([]);
 
   const socket = getSocketConnection();
   const roomId = localStorage.getItem("roomId");
@@ -28,37 +32,39 @@ const PokerPage = () => {
 
   useEffect(() => {
     if (userName) {
-      setUserData((prev) => ({ ...prev, name: userName, roomId }));
+      setUserData((prev) => ({ ...prev, userName, roomId, userId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:3001", {
-      query: { userId, userName }, // Send the user ID on connection
+      query: { userData }, // Send the user ID on connection
     });
 
     newSocket.on("connect", () => {
-      newSocket.emit("joinRoom", roomId);
-      newSocket.on("updateUsers", (updatedUsers: string[]) => {
-        console.log("UPDATE", updatedUsers);
-        setUsers(updatedUsers);
+      localStorage.setItem("socketId", newSocket.id);
+      newSocket.emit("joinRoom", userData);
+      newSocket.emit("roomId", roomId);
+      newSocket.on("updateUsers", (updatedUsers: User[]) => {
+        console.log("UPDATE", updatedUsers, checkUser(updatedUsers));
+        setUsers(checkUser(updatedUsers));
       });
     });
-    console.log("things", roomId, userId);
+    // console.log("things", roomId, userId);
     // setSocket(newSocket);
 
     return () => {
       newSocket.disconnect();
     };
-  }, [roomId, userId, userName]);
+  }, [roomId, userId, userName, userData]);
 
   useEffect(() => {}, [socket]);
   //   console.log("localstorage", localStorage.getItem("createdRoomId"));
 
   return (
     <div className={styles.cardsContainer}>
-      <div style={{ color: "white" }}>{users}...</div>
+      <div style={{ color: "white" }}>{}...</div>
       <div className={styles.yourCard}>
         <PokerCard number={0} />
       </div>

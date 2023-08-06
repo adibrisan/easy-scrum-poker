@@ -20,23 +20,24 @@ const rooms = new Map();
 const userRoomMap = new Map();
 const usersPresent = new Set();
 const userVotes = {};
+const updatedUserInCertainRoom = new Map();
 
 io.on("connection", (socket) => {
   console.log("A user connected");
   console.log(
     "has joined again",
-    socket.handshake.query.userId,
+    socket.handshake.query.userData,
     "and its name:",
     socket.handshake.query.userName
   );
-  const userIdReconnected = socket.handshake.query.userId;
-  const userNameReconnected = socket.handshake.query.userName;
-  socket.on("createRoom", (userName) => {
+  const userReconnected = socket.handshake.query.userData;
+  // const userNameReconnected = socket.handshake.query.userName;
+  socket.on("createRoom", (userInfo) => {
     // Generate a random room ID
     const roomId = generateRoomId();
 
     // Create a new room with the room ID and the user's name
-    rooms.set(roomId, [userName]);
+    rooms.set(userInfo, roomId);
 
     // Join the socket to the room
     socket.join(roomId);
@@ -44,7 +45,8 @@ io.on("connection", (socket) => {
     // Emit the room ID back to the client
     socket.emit("roomCreated", roomId);
 
-    console.log(`Room created: ${roomId} for user:${userName}`);
+    console.log(`Room created: ${roomId} for user:${userInfo.userName}`);
+    checkRealUser(rooms);
   });
 
   socket.on("userVote", (userVote) => {
@@ -53,49 +55,95 @@ io.on("connection", (socket) => {
     io.emit("allUserVotes", userVotes); // Broadcast all user votes to all clients
   });
 
-  socket.on("joinRoom", (roomId, userName) => {
+  socket.on("joinRoom", (userInfo) => {
+    userInfo.socketId = socket.id;
     // Check if the room exists
-    if (userIdReconnected) {
-      userRoomMap.set(userIdReconnected, roomId);
-      console.log("userRoomMap", userRoomMap);
-      usersPresent.add(userNameReconnected);
-      rooms.set(roomId, usersPresent);
-      socket.join(roomId);
-    } else if (rooms.has(roomId)) {
+    if (userReconnected) {
+      userRoomMap.set(userReconnected, userInfo.roomId);
+      // console.log("userRoomMap", userRoomMap);
+      // usersPresent.add(userNameReconnected);
+      rooms.set(userInfo, userInfo.roomId);
+      socket.on("roomId", (roomId) => {
+        const updatedUsers = getKeyByValue(rooms, roomId);
+        updatedUserInCertainRoom.set(roomId, updatedUsers);
+        io.to(roomId).emit("updateUsers", Array.from(rooms.keys()));
+      });
+
+      socket.join(userInfo.roomId);
+    } else if (rooms.has(userInfo.roomId)) {
+      checkRealUser(rooms);
       // Add the user's name to the list of users in the room
-      const usersInRoom = Array.from(rooms.get(roomId)) || [];
-      usersInRoom.push(userName);
-      rooms.set(roomId, usersInRoom);
+      const usersInRoom = rooms.get(userInfo) || [];
+      usersInRoom.push(userInfo.userName);
+      rooms.set(userInfo, userInfo.roomId);
 
       // Join the socket to the room
-      socket.join(roomId);
+      socket.join(userInfo.roomId);
 
       // Emit the updated user list to all users in the room
-      io.to(roomId).emit("userJoined", usersInRoom);
-      io.to(roomId).emit("updateUsers", rooms.get(roomId));
+      // io.to(userInfo.roomId).emit("userJoined", usersInRoom);
+      socket.on("roomId", (roomId) => {
+        const updatedUsers = getKeyByValue(rooms, roomId);
+        updatedUserInCertainRoom.set(roomId, updatedUsers);
+        io.to(roomId).emit("updateUsers", Array.from(rooms.keys()));
+      });
     } else {
+      checkRealUser(rooms);
       // If the room does not exist, you can handle the situation accordingly
       // For example, emit a "roomNotFound" event back to the user
       socket.emit("roomNotFound");
     }
+    checkRealUser(rooms);
     console.log("roomremain", rooms);
-    console.log(Array.from(rooms.get(roomId)));
-    io.to(roomId).emit("updateUsers", Array.from(rooms.get(roomId)));
+    // console.log("updated", Array.from(updatedUserInCertainRoom.values()));
+    // console.log(rooms.get(userInfo));
+    // io.to(userInfo.roomId).emit("updateUsers", rooms.get(userInfo));
     socket.on("disconnect", () => {
+      checkRealUser(rooms);
       //   if (roomId) {
       //     const userIndex = rooms.get(roomId)?.indexOf(userName);
       //     if (userIndex !== -1) {
       //       rooms.get(roomId)?.splice(userIndex, 1);
       //     }
       //   }
+      const socketIds = [];
+      socketIds.push(socket.id);
+      rooms.forEach((_value, key) => {
+        // console.log("key", key.socketId);
 
-      userRoomMap.delete(userIdReconnected);
-      rooms.delete(roomId);
+        if (key.socketId === socketIds[0]) {
+          rooms.delete(key);
+        }
+      });
+      for (const [key, value] of updatedUserInCertainRoom) {
+        if (value.socketId === socketIds[0]) {
+          updatedUserInCertainRoom.delete(key);
+        }
+      }
+      // userRoomMap.delete(userReconnected);
+      // rooms.delete(userInfo.roomId);
       // Emit the updated user list to all clients in the room
-      io.to(roomId).emit("updateUsers", rooms.get(roomId));
+      io.to(userInfo.roomId).emit("updateUsers", Array.from(rooms.keys()));
     });
   });
 });
+
+function checkRealUser(map) {
+  for (const key of map) {
+    if (!key?.userName || key.userName === "" || key.roomId === "") {
+      map.delete(key);
+    }
+  }
+}
+
+function getKeyByValue(map, targetValue) {
+  for (const [key, value] of map.entries()) {
+    if (value === targetValue) {
+      return key;
+    }
+  }
+  return null; // Return null if the value is not found
+}
 
 // Start the server on port 3001 (or any other port of your choice)
 const PORT = 3001;

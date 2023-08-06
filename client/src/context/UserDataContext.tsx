@@ -1,8 +1,9 @@
 import React, { createContext, ReactNode, useState } from "react";
 
 export interface UserData {
-  name: string;
+  userName: string;
   roomId: string;
+  socketId: string;
   storyPoints: number;
 }
 
@@ -13,8 +14,9 @@ interface IUserDataContext {
 
 const initialValues = {
   userData: {
-    name: "",
+    userName: "",
     roomId: "",
+    socketId: "",
     storyPoints: -1,
   },
   setUserData: () => {},
