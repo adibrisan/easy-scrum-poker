@@ -1,3 +1,8 @@
+.pokerPageLayout {
+  display: flex;
+  flex-direction: column;
+}
+
 .cardsContainer {
   display: flex;
   justify-content: center;
@@ -17,4 +22,11 @@
 .yourCard {
   /* display: flex; */
   /* justify-content: center; */
+}
+
+.sendLink {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  cursor: pointer;
 }

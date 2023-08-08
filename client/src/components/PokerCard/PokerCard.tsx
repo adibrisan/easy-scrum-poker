@@ -6,9 +6,10 @@ import { useContext } from "React";
 interface IPokerCard {
   number: number;
   clicked: boolean;
+  readOnly?: boolean;
 }
 
-const PokerCard = ({ number, clicked }: IPokerCard) => {
+const PokerCard = ({ number, clicked, readOnly = false }: IPokerCard) => {
   const { userData, setUserData } = useContext(UserDataContext);
   //   console.log("userBOX", userData);
 
@@ -38,14 +39,18 @@ const PokerCard = ({ number, clicked }: IPokerCard) => {
       alignItems="center"
       fontSize="24px"
       fontWeight="bold"
-      cursor="pointer"
+      cursor={!readOnly ? "pointer" : ""}
       transition="background-color 0.2s ease, transform 0.2s ease"
-      _hover={{ backgroundColor: "#1e90ff" }}
-      onClick={() => {
-        handlePokerCardClick(number);
-      }}
+      _hover={!readOnly ? { backgroundColor: "#1e90ff" } : {}}
+      onClick={
+        !readOnly
+          ? () => {
+              handlePokerCardClick(number);
+            }
+          : undefined
+      }
     >
-      <Text>{number}</Text>
+      <Text>{number === -1 ? "?" : number}</Text>
     </Box>
   );
 };

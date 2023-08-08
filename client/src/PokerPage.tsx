@@ -1,8 +1,12 @@
 import styles from "./PokerPage.module.css";
+import { Text, useToast, Box } from "@chakra-ui/react";
 import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { checkUser } from "./utils/checkForRealUser";
 import { User } from "./utils/checkForRealUser";
+import PlayersList from "./components/PlayersList/PlayersList";
+import { BsShareFill } from "react-icons/bs";
+
 import getSocketConnection from "./socketService";
 import { io } from "socket.io-client";
 
@@ -11,10 +15,11 @@ import { storyPointsInDays } from "./utils/storyPoints";
 import { UserDataContext } from "./context/UserDataContext";
 
 const PokerPage = () => {
+  const toast = useToast();
   const location = useLocation();
-  //   console.log(location);
   const { userData, setUserData } = useContext(UserDataContext);
   const [users, setUsers] = useState<User[]>([]);
+  //   console.log("USERS", users);
 
   const socket = getSocketConnection();
   const roomId = localStorage.getItem("roomId");
@@ -62,19 +67,56 @@ const PokerPage = () => {
     };
   }, [roomId, userId, userName, userData]);
 
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(`${location.pathname.split("/")[1]}`)
+      .then(() => {
+        console.log("Text copied to clipboard");
+        toast({
+          position: "top-right",
+          render: () => (
+            <Box color="white" p={3} bg="blue.500">
+              <Text fontSize="4xl">Text copied to clipboard !</Text>
+            </Box>
+          ),
+        });
+      })
+      .catch((err) => {
+        console.error("Error copying text:", err);
+        toast({
+          position: "top-right",
+          render: () => (
+            <Box color="white" p={3} bg="red.500">
+              <Text fontSize="4xl">Error copying text...</Text>
+            </Box>
+          ),
+        });
+      });
+  };
+
   return (
-    <div className={styles.cardsContainer}>
-      <div style={{ color: "white" }}>Your vote:{userData.storyPoints}</div>
-      <div className={styles.yourCard}>
-        <PokerCard number={userData.storyPoints} />
+    <div className={styles.pokerPageLayout}>
+      <span className={styles.sendLink} onClick={copyToClipboard}>
+        <BsShareFill fill="white" size={25} />
+        <Text fontSize="2xl" color="white">
+          Share the invite code
+        </Text>
+      </span>
+      <div className={styles.cardsContainer}>
+        <div style={{ color: "white" }}>
+          <PlayersList users={users} />
+        </div>
+        <div className={styles.yourCard}>
+          <PokerCard readOnly number={userData.storyPoints} />
+        </div>
+        <ul className={styles.cards}>
+          {storyPointsInDays.map((storyPoint, index) => (
+            <li key={index}>
+              <PokerCard number={storyPoint} />
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className={styles.cards}>
-        {storyPointsInDays.map((storyPoint, index) => (
-          <li key={index}>
-            <PokerCard number={storyPoint} />
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
