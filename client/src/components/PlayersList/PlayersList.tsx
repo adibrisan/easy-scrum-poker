@@ -1,5 +1,6 @@
 import PlayingCard from "../PlayingCard/PlayingCard";
-import { List, ListItem, ListIcon, Text } from "@chakra-ui/react";
+import { List, ListItem, Text, Box } from "@chakra-ui/react";
+import styles from "./PlayersList.module.css";
 
 interface User {
   userName: string;
@@ -9,21 +10,31 @@ interface User {
   userId: string;
 }
 
-const PlayersList = ({ users }: User[]) => {
+interface IPlayersList {
+  users: User[];
+  isRevealed: boolean;
+}
+
+const PlayersList = ({ users, isRevealed }: IPlayersList) => {
   console.log("users", users);
   const userList = users?.map((user: User, index: number) => (
-    <ListItem key={index}>
-      <Text display="flex" fontSize="4xl">
-        {user.userName}: {user.storyPoints === -1 ? "?" : user.storyPoints}
+    <ListItem key={index} className={styles.container}>
+      <Text fontSize="4xl" color="white">
+        {user.userName}
         {/* <img src={PokerBacked} alt="poker card backed" /> */}
-        <PlayingCard
-          points={user.storyPoints === -1 ? "?" : user.storyPoints}
-        />
       </Text>
+      <PlayingCard
+        points={user.storyPoints === -1 ? "?" : user.storyPoints}
+        isRevealed={isRevealed}
+      />
     </ListItem>
   ));
 
-  return <List spacing={3}>{userList}</List>;
+  return (
+    <List className={styles.containerList} spacing={3}>
+      {userList}
+    </List>
+  );
 };
 
 export default PlayersList;

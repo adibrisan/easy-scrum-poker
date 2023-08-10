@@ -4,17 +4,18 @@ import PokerFaced from "../../assets/poker-faced.svg";
 
 interface IPlayingCard {
   points: string | number;
+  isRevealed: boolean;
 }
 
-const PlayingCard = ({ points }: IPlayingCard) => {
+const PlayingCard = ({ points, isRevealed }: IPlayingCard) => {
   return (
     <div className={styles.imageContainer}>
       <img
-        src={points === "?" ? PokerBacked : PokerFaced}
+        src={!isRevealed ? PokerBacked : PokerFaced}
         alt="Your Poker card backed"
         className={styles.centeredImage}
       />
-      <div className={styles.centeredLetter}>{points}</div>
+      {isRevealed && <div className={styles.centeredLetter}>{points}</div>}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import styles from "./PokerPage.module.css";
-import { Text, useToast, Box } from "@chakra-ui/react";
+import { Text, useToast, Box, Button } from "@chakra-ui/react";
 import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { checkUser } from "./utils/checkForRealUser";
@@ -15,6 +15,7 @@ import { storyPointsInDays } from "./utils/storyPoints";
 import { UserDataContext } from "./context/UserDataContext";
 
 const PokerPage = () => {
+  const [isRevealed, setIsRevealed] = useState(false);
   const toast = useToast();
   const location = useLocation();
   const { userData, setUserData } = useContext(UserDataContext);
@@ -94,18 +95,35 @@ const PokerPage = () => {
       });
   };
 
+  const toggleRevealCards = () => {
+    setIsRevealed((prev) => !prev);
+  };
+
   return (
     <div className={styles.pokerPageLayout}>
-      <span className={styles.sendLink} onClick={copyToClipboard}>
-        <BsShareFill fill="white" size={25} />
-        <Text fontSize="2xl" color="white">
-          Share the invite code
-        </Text>
+      <span className={styles.sendLink}>
+        <span onClick={copyToClipboard}>
+          <BsShareFill fill="white" size={25} />
+          <Text fontSize="2xl" color="white">
+            Share the invite code
+          </Text>
+        </span>
+        <Button
+          onClick={toggleRevealCards}
+          colorScheme="blue"
+          size="md"
+          variant="solid"
+          borderRadius="lg"
+          width={80}
+          height="30px"
+          marginLeft={10}
+          fontSize="15px"
+        >
+          {!isRevealed ? "Reveal Cards" : "Vote Again"}
+        </Button>
       </span>
       <div className={styles.cardsContainer}>
-        <div style={{ color: "white" }}>
-          <PlayersList users={users} />
-        </div>
+        <PlayersList users={users} isRevealed={isRevealed} />
         <div className={styles.yourCard}>
           <PokerCard readOnly number={userData.storyPoints} />
         </div>

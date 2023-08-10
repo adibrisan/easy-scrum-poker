@@ -1,13 +1,13 @@
 .pokerPageLayout {
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 80px);
 }
 
 .cardsContainer {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  height: calc(100vh - 80px);
 }
 
 .cards {
@@ -27,6 +27,18 @@
 .sendLink {
   display: flex;
   justify-content: space-between;
-  width: 200px;
+  width: 400px;
   cursor: pointer;
+  margin-bottom: 50px;
+}
+
+@media (max-width: 540px) {
+  .sendLink {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 120px;
+    margin-bottom: 50px;
+  }
 }
