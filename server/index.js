@@ -49,6 +49,12 @@ io.on("connection", (socket) => {
     checkRealUser(rooms);
   });
 
+  socket.on("isRevealed", (isRevealed, roomId) => {
+    console.log("IS REVEALED IS REVEALED", isRevealed, roomId);
+    io.to(roomId).emit("sentIsReveal", isRevealed);
+    // socket.emit("sentIsReveal", isRevealed);
+  });
+
   socket.on("userVote", (userVote) => {
     userVotes[userVote.userName] = userVote.storyPoints;
     console.log("dsadsadasdsa", userVotes);

@@ -50,6 +50,7 @@ const PokerPage = () => {
 
     newSocket.on("connect", () => {
       localStorage.setItem("socketId", newSocket.id);
+      newSocket.emit("isRevealed", isRevealed, roomId);
       newSocket.emit("joinRoom", userData);
       newSocket.emit("roomId", roomId);
       newSocket.on("updateUsers", (updatedUsers: User[]) => {
@@ -60,13 +61,18 @@ const PokerPage = () => {
         setUsers(roomUsers);
       });
     });
+    newSocket.on("sentIsReveal", (sentIsReveal: boolean) => {
+      console.log("IS REVEALED", sentIsReveal);
+      setIsRevealed(sentIsReveal);
+    });
     // console.log("things", roomId, userId);
     // setSocket(newSocket);
 
     return () => {
       newSocket.disconnect();
     };
-  }, [roomId, userId, userName, userData]);
+  }, [roomId, userId, userName, userData, isRevealed]);
+  console.log("IS REVEALED", isRevealed);
 
   const copyToClipboard = () => {
     navigator.clipboard
