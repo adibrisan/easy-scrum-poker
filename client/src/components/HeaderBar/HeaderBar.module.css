@@ -1,0 +1,17 @@
+.neonLetter {
+  color: white; /* Neon green color */
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00,
+    0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 70px #00ff00;
+  animation: neonAnimation 40.1s linear infinite;
+}
+
+@keyframes neonAnimation {
+  0%,
+  100% {
+    text-shadow: 0 0 10px #696c69, 0 0 20px #6f716f, 0 0 30px #ad8383,
+      0 0 40px #acb9ac, 0 0 50px #a0a7a0, 0 0 60px #a8aea8, 0 0 70px #a2aba2;
+  }
+  50% {
+    text-shadow: none;
+  }
+}

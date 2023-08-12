@@ -1,6 +1,7 @@
 import { Avatar, Flex, Text, Box } from "@chakra-ui/react";
 import { useContext } from "react";
 import { UserDataContext } from "../../context/UserDataContext";
+import styles from "./HeaderBar.module.css";
 
 const HeaderBar = () => {
   const { userData } = useContext(UserDataContext);
@@ -8,6 +9,7 @@ const HeaderBar = () => {
     <Flex justifyContent="space-between" top={0}>
       <Box display="inline-block" position="relative" p={7}>
         <Text
+          className={styles.neonLetter}
           as="span"
           sx={{
             background: "teal.500",
@@ -39,6 +41,7 @@ const HeaderBar = () => {
           color="white"
         />
         <Text
+          className={styles.neonLetter}
           as="span"
           sx={{
             color: "white",

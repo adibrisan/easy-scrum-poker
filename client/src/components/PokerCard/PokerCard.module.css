@@ -29,3 +29,11 @@
   background-color: #1e90ff;
   transform: translateY(-8px); /* Moves the card 8px higher when clicked */
 }
+
+.yourScoreContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}

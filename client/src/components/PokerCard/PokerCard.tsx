@@ -2,6 +2,7 @@ import getSocketConnection from "../../socketService";
 import { Box, Text } from "@chakra-ui/react";
 import { UserDataContext } from "../../context/UserDataContext";
 import { useContext } from "React";
+import styles from "./PokerCard.module.css";
 
 interface IPokerCard {
   number: number;
@@ -26,32 +27,44 @@ const PokerCard = ({ number, clicked, readOnly = false }: IPokerCard) => {
   };
 
   return (
-    <Box
-      w="60px"
-      h="100px"
-      mr={3}
-      color="white"
-      borderRadius="8px"
-      border="2px solid #1e90ff"
-      backgroundColor={clicked ? "#1e90ff" : "rgba(173, 216, 230, 0.7)"}
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      fontSize="24px"
-      fontWeight="bold"
-      cursor={!readOnly ? "pointer" : ""}
-      transition="background-color 0.2s ease, transform 0.2s ease"
-      _hover={!readOnly ? { backgroundColor: "#1e90ff" } : {}}
-      onClick={
-        !readOnly
-          ? () => {
-              handlePokerCardClick(number);
-            }
-          : undefined
-      }
-    >
-      <Text>{number === -1 ? "?" : number}</Text>
-    </Box>
+    <div className={readOnly ? styles.yourScoreContainer : undefined}>
+      {readOnly && (
+        <Text
+          fontSize="3xl"
+          fontWeight="medium"
+          color="white"
+          textAlign="center"
+        >
+          Your score
+        </Text>
+      )}
+      <Box
+        w="60px"
+        h="100px"
+        mr={!readOnly ? 3 : undefined}
+        color="white"
+        borderRadius="8px"
+        border="2px solid #1e90ff"
+        backgroundColor={clicked ? "#1e90ff" : "rgba(173, 216, 230, 0.7)"}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        fontSize="24px"
+        fontWeight="bold"
+        cursor={!readOnly ? "pointer" : ""}
+        transition="background-color 0.2s ease, transform 0.2s ease"
+        _hover={!readOnly ? { backgroundColor: "#1e90ff" } : {}}
+        onClick={
+          !readOnly
+            ? () => {
+                handlePokerCardClick(number);
+              }
+            : undefined
+        }
+      >
+        <Text>{number === -1 ? "?" : number}</Text>
+      </Box>
+    </div>
   );
 };
 
