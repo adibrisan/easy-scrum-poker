@@ -107,27 +107,30 @@ const PokerPage = () => {
 
   return (
     <div className={styles.pokerPageLayout}>
-      <span className={styles.sendLink}>
-        <span onClick={copyToClipboard}>
-          <BsShareFill fill="white" size={25} />
-          <Text fontSize="2xl" color="white">
-            Share the invite code
-          </Text>
+      {localStorage.getItem("creatorOf") ===
+        location.pathname.split("/")[1] && (
+        <span className={styles.sendLink}>
+          <span onClick={copyToClipboard}>
+            <BsShareFill fill="white" size={25} />
+            <Text fontSize="2xl" color="white">
+              Share the invite code
+            </Text>
+          </span>
+          <Button
+            onClick={toggleRevealCards}
+            colorScheme="blue"
+            size="md"
+            variant="solid"
+            borderRadius="lg"
+            width={80}
+            height="30px"
+            marginLeft={10}
+            fontSize="15px"
+          >
+            {!isRevealed ? "Reveal Cards" : "Vote Again"}
+          </Button>
         </span>
-        <Button
-          onClick={toggleRevealCards}
-          colorScheme="blue"
-          size="md"
-          variant="solid"
-          borderRadius="lg"
-          width={80}
-          height="30px"
-          marginLeft={10}
-          fontSize="15px"
-        >
-          {!isRevealed ? "Reveal Cards" : "Vote Again"}
-        </Button>
-      </span>
+      )}
       <div className={styles.cardsContainer}>
         <PlayersList users={users} isRevealed={isRevealed} />
         <div className={styles.yourCard}>

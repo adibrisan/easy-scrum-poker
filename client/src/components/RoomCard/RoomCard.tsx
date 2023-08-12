@@ -78,6 +78,7 @@ const RoomCard = ({
       socket.on("roomCreated", (roomIdFromServer: string) => {
         setRoomId(roomIdFromServer);
         localStorage.setItem("roomId", roomIdFromServer);
+        localStorage.setItem("creatorOf", `${roomIdFromServer}`);
         console.log("bbbbb", roomIdFromServer); // Store the roomId in state
       });
     }
