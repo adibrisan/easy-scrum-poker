@@ -1,7 +1,7 @@
 import getSocketConnection from "../../socketService";
 import { Box, Text } from "@chakra-ui/react";
 import { UserDataContext } from "../../context/UserDataContext";
-import { useContext } from "React";
+import { useContext } from "react";
 import styles from "./PokerCard.module.css";
 
 interface IPokerCard {
