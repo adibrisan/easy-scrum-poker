@@ -29,6 +29,12 @@ const PokerPage = () => {
   //   console.log("inroom", localStorage.getItem("roomId"));
 
   useEffect(() => {
+    if (!isRevealed) {
+      setUserData((prev) => ({ ...prev, storyPoints: -1 }));
+    }
+  }, [isRevealed]);
+
+  useEffect(() => {
     socket.on("allUserVotes", (allUserVotes) => {
       console.log("ALLLLLLLL", allUserVotes);
       // Update your UI to display allUserVotes
@@ -54,7 +60,9 @@ const PokerPage = () => {
       newSocket.emit("joinRoom", userData);
       newSocket.emit("roomId", roomId);
       newSocket.on("updateUsers", (updatedUsers: User[]) => {
-        const roomUsers = checkUser(updatedUsers, roomId as string);
+        const roomUsers = checkUser(updatedUsers, roomId as string).sort(
+          (a, b) => a.userName.localeCompare(b.userName)
+        );
         console.log("UPDATE", updatedUsers, checkUser(updatedUsers, roomId));
 
         // setUserData(roomUsers.filter((user) => user.userId === userId)[0]);
