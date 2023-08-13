@@ -1,5 +1,5 @@
 import PlayingCard from "../PlayingCard/PlayingCard";
-import { List, ListItem, Text, Box } from "@chakra-ui/react";
+import { List, ListItem, Text } from "@chakra-ui/react";
 import styles from "./PlayersList.module.css";
 
 interface User {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import getSocketConnection from "../../socketService";
 import { Box, Text } from "@chakra-ui/react";
 import { UserDataContext } from "../../context/UserDataContext";
@@ -16,6 +17,7 @@ const PokerCard = ({ number, readOnly = false }: IPokerCard) => {
   const handlePokerCardClick = (storyNumber: number) => {
     const socket = getSocketConnection();
     localStorage.setItem("storyPoints", `${storyNumber}`);
+    // @ts-ignore
     setUserData((prevData) => ({ ...prevData, storyPoints: storyNumber }));
     const user = {
       userName: userData.userName,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import styles from "./PokerPage.module.css";
 import { Text, useToast, Box, Button } from "@chakra-ui/react";
 import { useState, useEffect, useContext } from "react";
@@ -39,6 +40,7 @@ const PokerPage = () => {
 
   useEffect(() => {
     if (!isRevealed) {
+      // @ts-ignore
       setUserData((prev) => ({ ...prev, storyPoints: -1 }));
     }
   }, [isRevealed]);
@@ -53,6 +55,7 @@ const PokerPage = () => {
 
   useEffect(() => {
     if (userName) {
+      // @ts-ignore
       setUserData((prev) => ({ ...prev, userName, roomId, userId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,6 +75,7 @@ const PokerPage = () => {
         const roomUsers = checkUser(updatedUsers, roomId as string).sort(
           (a, b) => a.userName.localeCompare(b.userName)
         );
+        // @ts-ignore
         console.log("UPDATE", updatedUsers, checkUser(updatedUsers, roomId));
 
         // setUserData(roomUsers.filter((user) => user.userId === userId)[0]);

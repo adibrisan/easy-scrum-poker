@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import styles from "./StoryCalculation.module.css";
 
 interface IStoryCalculation {
@@ -20,13 +21,15 @@ const StoryCalculation = ({ storyData }: IStoryCalculation) => {
     { Max: maxValue === -1 ? 0 : maxValue },
     { Average: storyPointsAverage.toFixed(1) },
   ];
-
   return (
     <div className={styles.container}>
       {options.map((elem) => (
         <div className={styles.element}>
           <div>{Object.keys(elem)[0]}</div>
-          <div>{elem[`${Object.keys(elem)[0]}`]}</div>
+          {
+            // @ts-ignore
+            <div>{elem[`${Object.keys(elem)[0]}`]}</div>
+          }
         </div>
       ))}
     </div>

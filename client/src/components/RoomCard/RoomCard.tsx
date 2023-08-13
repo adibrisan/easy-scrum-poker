@@ -9,7 +9,6 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { UserData } from "../../context/UserDataContext";
 import getSocketConnection from "../../socketService";
 import uuid from "react-uuid";
 
