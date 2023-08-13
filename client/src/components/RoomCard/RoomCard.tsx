@@ -43,7 +43,7 @@ const RoomCard = ({
       setShowError(false);
     }
     if (roomId) {
-      navigate(`/${roomId}`, { state: { created: true } });
+      navigate(`/${roomId}`);
     }
   }, [userName, roomId, joinRoomId, navigate]);
 

@@ -29,6 +29,7 @@ const PokerPage = () => {
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
   //   console.log("inroom", localStorage.getItem("roomId"));
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (localStorage.getItem("roomId") !== location.pathname.split("/")[1]) {
@@ -58,7 +59,7 @@ const PokerPage = () => {
   }, [userName]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3001", {
+    const newSocket = io(`${BASE_URL}`, {
       query: { userData }, // Send the user ID on connection
     });
 
