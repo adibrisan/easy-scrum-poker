@@ -122,7 +122,7 @@ io.on("connection", (socket) => {
         }
       });
       for (const [key, value] of updatedUserInCertainRoom) {
-        if (value.socketId === socketIds[0]) {
+        if (value?.socketId === socketIds[0]) {
           updatedUserInCertainRoom.delete(key);
         }
       }
