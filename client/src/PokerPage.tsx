@@ -6,6 +6,7 @@ import { checkUser } from "./utils/checkForRealUser";
 import { User } from "./utils/checkForRealUser";
 import PlayersList from "./components/PlayersList/PlayersList";
 import { BsShareFill } from "react-icons/bs";
+import StoryCalculation from "./components/StoryCalculation/StoryCalculation";
 
 import getSocketConnection from "./socketService";
 import { io } from "socket.io-client";
@@ -113,6 +114,10 @@ const PokerPage = () => {
     setIsRevealed((prev) => !prev);
   };
 
+  const storyData = users.map((user) => {
+    return user.storyPoints;
+  });
+
   return (
     <div className={styles.pokerPageLayout}>
       {localStorage.getItem("creatorOf") ===
@@ -144,6 +149,7 @@ const PokerPage = () => {
         <div className={styles.yourCard}>
           <PokerCard readOnly number={userData.storyPoints} />
         </div>
+        {isRevealed && <StoryCalculation storyData={storyData} />}
         <ul className={styles.cards}>
           {storyPointsInDays.map((storyPoint, index) => (
             <li key={index}>

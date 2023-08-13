@@ -6,11 +6,10 @@ import styles from "./PokerCard.module.css";
 
 interface IPokerCard {
   number: number;
-  clicked: boolean;
   readOnly?: boolean;
 }
 
-const PokerCard = ({ number, clicked, readOnly = false }: IPokerCard) => {
+const PokerCard = ({ number, readOnly = false }: IPokerCard) => {
   const { userData, setUserData } = useContext(UserDataContext);
   //   console.log("userBOX", userData);
 
@@ -45,7 +44,7 @@ const PokerCard = ({ number, clicked, readOnly = false }: IPokerCard) => {
         color="white"
         borderRadius="8px"
         border="2px solid #1e90ff"
-        backgroundColor={clicked ? "#1e90ff" : "rgba(173, 216, 230, 0.7)"}
+        backgroundColor={"rgba(173, 216, 230, 0.7)"}
         display="flex"
         justifyContent="center"
         alignItems="center"
