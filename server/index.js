@@ -153,7 +153,7 @@ function getKeyByValue(map, targetValue) {
 }
 
 // Start the server on port 3001 (or any other port of your choice)
-const PORT = process.env.SOCKET_IO_SERVER_PORT;
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Socket.IO server is running on port ${PORT}`);
 });
