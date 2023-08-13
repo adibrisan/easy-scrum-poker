@@ -18,7 +18,7 @@ const StoryCalculation = ({ storyData }: IStoryCalculation) => {
   const options = [
     { Min: minValue === -1 ? 0 : minValue },
     { Max: maxValue === -1 ? 0 : maxValue },
-    { Average: storyPointsAverage },
+    { Average: storyPointsAverage.toFixed(1) },
   ];
 
   return (

@@ -1,7 +1,7 @@
 import styles from "./PokerPage.module.css";
 import { Text, useToast, Box, Button } from "@chakra-ui/react";
 import { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { checkUser } from "./utils/checkForRealUser";
 import { User } from "./utils/checkForRealUser";
 import PlayersList from "./components/PlayersList/PlayersList";
@@ -16,6 +16,7 @@ import { storyPointsInDays } from "./utils/storyPoints";
 import { UserDataContext } from "./context/UserDataContext";
 
 const PokerPage = () => {
+  const navigate = useNavigate();
   const [isRevealed, setIsRevealed] = useState(false);
   const toast = useToast();
   const location = useLocation();
@@ -28,6 +29,12 @@ const PokerPage = () => {
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
   //   console.log("inroom", localStorage.getItem("roomId"));
+
+  useEffect(() => {
+    if (localStorage.getItem("roomId") !== location.pathname.split("/")[1]) {
+      navigate("/");
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     if (!isRevealed) {

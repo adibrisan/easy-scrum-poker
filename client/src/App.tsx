@@ -1,7 +1,12 @@
 import styles from "./App.module.css";
+import { useEffect } from "react";
 import RoomCard from "./components/RoomCard/RoomCard";
 
 function App() {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <>
       <div className={styles.center}>
