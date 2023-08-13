@@ -47,6 +47,12 @@ const RoomCard = ({
     }
   }, [userName, roomId, joinRoomId, navigate]);
 
+  useEffect(() => {
+    if (userNameJoin.trim() !== "" && joinRoomId.trim() !== "") {
+      setShowErrorJoin(false);
+    }
+  }, [userNameJoin, joinRoomId]);
+
   const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
   };
@@ -85,33 +91,36 @@ const RoomCard = ({
   };
 
   const handleJoinRoom = () => {
-    // Emit the 'joinRoom' event to the server with the roomId and user's name
-    const userId = uuid();
-    localStorage.setItem("userName", userNameJoin);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("roomId", joinRoomId);
-    navigate(`/${joinRoomId}`);
-    console.log("roomiD", joinRoomId);
-    const userInfo = {
-      userName: userNameJoin,
-      roomId: joinRoomId,
-      socketId: socket.id,
-      storyPoints: -1,
-      userId,
-    };
-    // socket.emit("joinRoom", joinRoomId, userNameJoin);
-    socket.emit("joinRoom", userInfo);
-    setUserData(userInfo);
-    // Listen for 'userJoined' event from the server and update the user list
-    socket.on("userJoined", (usersInRoom) => {
-      // You can update the UI to display the list of users in the room
-      console.log("Users in room:", usersInRoom);
-    });
+    if (userNameJoin.trim() === "" && joinRoomId.trim() === "") {
+      setShowErrorJoin(true);
+    } else {
+      const userId = uuid();
+      localStorage.setItem("userName", userNameJoin);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("roomId", joinRoomId);
+      navigate(`/${joinRoomId}`);
+      console.log("roomiD", joinRoomId);
+      const userInfo = {
+        userName: userNameJoin,
+        roomId: joinRoomId,
+        socketId: socket.id,
+        storyPoints: -1,
+        userId,
+      };
+      // socket.emit("joinRoom", joinRoomId, userNameJoin);
+      socket.emit("joinRoom", userInfo);
+      setUserData(userInfo);
+      // Listen for 'userJoined' event from the server and update the user list
+      socket.on("userJoined", (usersInRoom) => {
+        // You can update the UI to display the list of users in the room
+        console.log("Users in room:", usersInRoom);
+      });
 
-    // Listen for 'roomNotFound' event from the server
-    socket.on("roomNotFound", () => {
-      console.log("Room not found. Please check the room ID and try again.");
-    });
+      // Listen for 'roomNotFound' event from the server
+      socket.on("roomNotFound", () => {
+        console.log("Room not found. Please check the room ID and try again.");
+      });
+    }
   };
 
   return (
@@ -139,7 +148,7 @@ const RoomCard = ({
               color="#ffffff"
               size="lg"
               sx={{
-                borderColor: showError ? "red.500" : "inherit",
+                borderColor: showErrorJoin ? "red.500" : "inherit",
                 "::placeholder": { color: "white" },
               }}
             />
@@ -153,7 +162,7 @@ const RoomCard = ({
               color="#ffffff"
               size="lg"
               sx={{
-                borderColor: showError ? "red.500" : "inherit",
+                borderColor: showErrorJoin ? "red.500" : "inherit",
                 "::placeholder": { color: "white" },
               }}
             />
@@ -173,10 +182,10 @@ const RoomCard = ({
           />
         )}
 
-        {showError && (
+        {(showError || showErrorJoin) && (
           <Box
             color="red.100"
-            fontSize="xl"
+            fontSize="2xl"
             top={mode === "join" ? 120 : 35}
             position="absolute"
           >
