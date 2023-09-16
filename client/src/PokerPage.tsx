@@ -9,7 +9,6 @@ import PlayersList from "./components/PlayersList/PlayersList";
 import { BsShareFill } from "react-icons/bs";
 import StoryCalculation from "./components/StoryCalculation/StoryCalculation";
 
-import getSocketConnection from "./socketService";
 import { io } from "socket.io-client";
 
 import PokerCard from "./components/PokerCard/PokerCard";
@@ -24,7 +23,7 @@ const PokerPage = () => {
   const { userData, setUserData } = useContext(UserDataContext);
   const [users, setUsers] = useState<User[]>([]);
 
-  const socket = getSocketConnection();
+  // const socket = getSocketConnection();
   const roomId = localStorage.getItem("roomId");
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
