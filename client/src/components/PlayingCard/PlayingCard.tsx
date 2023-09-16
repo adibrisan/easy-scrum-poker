@@ -17,7 +17,7 @@ const PlayingCard = ({ points, isRevealed }: IPlayingCard) => {
       />
       {isRevealed && <div className={styles.centeredLetter}>{points}</div>}
       {!isRevealed && typeof points === "number" && (
-        <div className={styles.centeredLetter}>Ready</div>
+        <div className={styles.centeredLetterReady}>Ready</div>
       )}
     </div>
   );
