@@ -44,13 +44,6 @@ const PokerPage = () => {
   }, [isRevealed]);
 
   useEffect(() => {
-    socket.on("allUserVotes", (allUserVotes) => {
-      // Update your UI to display allUserVotes
-      // For example, you can iterate through allUserVotes and display names and votes.
-    });
-  }, [socket]);
-
-  useEffect(() => {
     if (userName) {
       // @ts-ignore
       setUserData((prev) => ({ ...prev, userName, roomId, userId }));

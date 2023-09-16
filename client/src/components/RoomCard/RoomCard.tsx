@@ -106,9 +106,9 @@ const RoomCard = ({
       socket.emit("joinRoom", userInfo);
       setUserData(userInfo);
       // Listen for 'userJoined' event from the server and update the user list
-      socket.on("userJoined", (usersInRoom) => {
-        // You can update the UI to display the list of users in the room
-      });
+      // socket.on("userJoined", (usersInRoom) => {
+      //   // You can update the UI to display the list of users in the room
+      // });
 
       // Listen for 'roomNotFound' event from the server
       socket.on("roomNotFound", () => {
