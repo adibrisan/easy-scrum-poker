@@ -64,8 +64,6 @@ const RoomCard = ({
     if (userName.trim() === "") {
       setShowError(true);
     } else {
-      console.log("Creating room with user name:", userName);
-      // setUserData((prev) => ({ ...prev, name: userName }));
       const userId = uuid();
       localStorage.setItem("userName", userName);
       localStorage.setItem("userId", userId);
@@ -84,7 +82,6 @@ const RoomCard = ({
         setRoomId(roomIdFromServer);
         localStorage.setItem("roomId", roomIdFromServer);
         localStorage.setItem("creatorOf", `${roomIdFromServer}`);
-        console.log("bbbbb", roomIdFromServer); // Store the roomId in state
       });
     }
   };
@@ -98,7 +95,6 @@ const RoomCard = ({
       localStorage.setItem("userId", userId);
       localStorage.setItem("roomId", joinRoomId);
       navigate(`/${joinRoomId}`);
-      console.log("roomiD", joinRoomId);
       const userInfo = {
         userName: userNameJoin,
         roomId: joinRoomId,
@@ -112,7 +108,6 @@ const RoomCard = ({
       // Listen for 'userJoined' event from the server and update the user list
       socket.on("userJoined", (usersInRoom) => {
         // You can update the UI to display the list of users in the room
-        console.log("Users in room:", usersInRoom);
       });
 
       // Listen for 'roomNotFound' event from the server

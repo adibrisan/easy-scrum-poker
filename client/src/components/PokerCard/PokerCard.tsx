@@ -12,7 +12,6 @@ interface IPokerCard {
 
 const PokerCard = ({ number, readOnly = false }: IPokerCard) => {
   const { userData, setUserData } = useContext(UserDataContext);
-  //   console.log("userBOX", userData);
 
   const handlePokerCardClick = (storyNumber: number) => {
     const socket = getSocketConnection();

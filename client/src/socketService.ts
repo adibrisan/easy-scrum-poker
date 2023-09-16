@@ -3,7 +3,6 @@ import { io, Socket } from "socket.io-client";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-console.log("BASE_URL", BASE_URL);
 
 const getSocketConnection = () => {
   // If the socket instance already exists, return it
@@ -13,7 +12,6 @@ const getSocketConnection = () => {
 
   // If the socket instance does not exist, try to retrieve the socket.id from localStorage
   const storedSocketId = localStorage.getItem("socketId");
-  console.log("socket", storedSocketId);
 
   if (storedSocketId !== "undefined") {
     // Reestablish the socket connection using the stored socket.id
@@ -30,7 +28,6 @@ const getSocketConnection = () => {
   socket = io(`${BASE_URL}`);
 
   // Store the socket.id in localStorage
-  console.log("sk", socket);
 
   localStorage.setItem("socketId", socket.id);
 

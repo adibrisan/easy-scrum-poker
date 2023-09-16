@@ -23,13 +23,11 @@ const PokerPage = () => {
   const location = useLocation();
   const { userData, setUserData } = useContext(UserDataContext);
   const [users, setUsers] = useState<User[]>([]);
-  //   console.log("USERS", users);
 
   const socket = getSocketConnection();
   const roomId = localStorage.getItem("roomId");
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
-  //   console.log("inroom", localStorage.getItem("roomId"));
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
@@ -47,7 +45,6 @@ const PokerPage = () => {
 
   useEffect(() => {
     socket.on("allUserVotes", (allUserVotes) => {
-      console.log("ALLLLLLLL", allUserVotes);
       // Update your UI to display allUserVotes
       // For example, you can iterate through allUserVotes and display names and votes.
     });
@@ -75,31 +72,23 @@ const PokerPage = () => {
         const roomUsers = checkUser(updatedUsers, roomId as string).sort(
           (a, b) => a.userName.localeCompare(b.userName)
         );
-        // @ts-ignore
-        console.log("UPDATE", updatedUsers, checkUser(updatedUsers, roomId));
 
-        // setUserData(roomUsers.filter((user) => user.userId === userId)[0]);
         setUsers(roomUsers);
       });
     });
     newSocket.on("sentIsReveal", (sentIsReveal: boolean) => {
-      console.log("IS REVEALED", sentIsReveal);
       setIsRevealed(sentIsReveal);
     });
-    // console.log("things", roomId, userId);
-    // setSocket(newSocket);
 
     return () => {
       newSocket.disconnect();
     };
   }, [roomId, userId, userName, userData, isRevealed]);
-  console.log("IS REVEALED", isRevealed);
 
   const copyToClipboard = () => {
     navigator.clipboard
       .writeText(`${location.pathname.split("/")[1]}`)
       .then(() => {
-        console.log("Text copied to clipboard");
         toast({
           position: "top-right",
           render: () => (

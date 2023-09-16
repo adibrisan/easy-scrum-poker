@@ -16,7 +16,6 @@ interface IPlayersList {
 }
 
 const PlayersList = ({ users, isRevealed }: IPlayersList) => {
-  console.log("users", users);
   const userList = users?.map((user: User, index: number) => (
     <ListItem key={index} className={styles.container}>
       <Text fontSize="4xl" color="white" textAlign="center">
