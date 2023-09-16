@@ -3,7 +3,7 @@ import PokerBacked from "../../assets/poker-backed.svg";
 import PokerFaced from "../../assets/poker-faced.svg";
 
 interface IPlayingCard {
-  points: string | number;
+  points: number;
   isRevealed: boolean;
 }
 
