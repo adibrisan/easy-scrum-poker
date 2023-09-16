@@ -16,6 +16,9 @@ const PlayingCard = ({ points, isRevealed }: IPlayingCard) => {
         className={styles.centeredImage}
       />
       {isRevealed && <div className={styles.centeredLetter}>{points}</div>}
+      {!isRevealed && points > 0 && (
+        <div className={styles.centeredLetter}>Ready</div>
+      )}
     </div>
   );
 };
